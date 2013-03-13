@@ -1,0 +1,31 @@
+name: 'Google Analytics Most Popular'
+id: googleanalyticsmostpopular
+description: 'Use your Google Analytics data to publish a Most Popular list'
+version: 1.0
+author_name: 'Dan Wolfgang, uiNNOVATIONS'
+author_link: 'http://uinnovations.com'
+
+blog_config_template: 'config.mtml'
+settings:
+    analytics_username:
+    analytics_password:
+    analytics_profile_id:
+    gamp_size_limit:
+        default: '15'
+    gamp_history:
+        default: '7'
+    gamp_valid_blog_id_pages:
+    gamp_valid_blog_id_entries:
+    gamp_valid_other_urls:
+    gamp_base_url:
+        default: 'http://'
+
+tags:
+    block:
+        GoogleAnalyticsMostPopular: $GoogleAnalyticsMostPopular::GoogleAnalyticsMostPopular::Plugin::gamp_block
+    function:
+        GAMPPageViews:  $GoogleAnalyticsMostPopular::GoogleAnalyticsMostPopular::Plugin::gamp_page_views
+        GAMPItemType:   $GoogleAnalyticsMostPopular::GoogleAnalyticsMostPopular::Plugin::gamp_item_type
+        GAMPOtherURL:   $GoogleAnalyticsMostPopular::GoogleAnalyticsMostPopular::Plugin::gamp_other_url
+        GAMPOtherTitle: $GoogleAnalyticsMostPopular::GoogleAnalyticsMostPopular::Plugin::gamp_other_title
+
