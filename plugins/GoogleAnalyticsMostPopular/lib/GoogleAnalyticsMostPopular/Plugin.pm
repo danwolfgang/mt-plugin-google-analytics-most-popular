@@ -26,7 +26,10 @@ sub gamp_block {
     }
     else {
         my $profileid = $config->{analytics_profile_id};
-        if (!$profileid) { return MT->log("GAMP doesn't appear to have a profile ID specified."); }
+
+        if (!$profileid) {
+            return MT->log("GAMP doesn't appear to have a profile ID specified.");
+        }
 
         # The returned results should fall between today and the "history" day.
         use DateTime;
@@ -39,8 +42,8 @@ sub gamp_block {
 
         # Follow this format to retrieve the most popular page views.
         # This is a recipe from the Data Feed Query Explorer:
-        # http://code.google.com/apis/analytics/docs/gdata/gdataExplorer.html
-        
+        # http://ga-dev-tools.appspot.com/explorer/
+
         # https://www.google.com/analytics/feeds/data?ids=ga%3A20906740
         # &dimensions=ga%3ApagePath%2Cga%3ApageTitle&metrics=ga%3Apageviews
         # &sort=-ga%3Apageviews&start-date=2009-08-27&end-date=2009-09-10&max-results=50
@@ -143,7 +146,7 @@ sub _gaGetToken {
 sub _gaDataFeed {
     # arguments passed to this function
     my $url = $_[0];
-    my $token = $_[1];    
+    my $token = $_[1];
 
     # create user agent object
     my $ua = LWP::UserAgent->new;
@@ -208,10 +211,10 @@ sub _parse_XML {
             $basename =~ s!\-!\_!g; # Replace hyphens with underscores, because
                                     # underscores are used to store the actual basename in MT.
             #MT->log("$limit. gaPathPath: $gaPagePath; basename: $basename");
-            
-            
+
+
             # First, check the entries.
-            
+
             # Grab all entries that match this basename.
             @entries = MT::Entry->load({ basename => $basename, });
             #MT->log("Found ".@entries." entries to match this basename: $basename");
@@ -247,7 +250,7 @@ sub _parse_XML {
                                 return $ctx->error( $builder->errstr );
                             }
                             $res .= $out;
-                        
+
                             $limit++; # after finding valid responses, increase the limit counter.
                             next GAMPITEM;
                         }
@@ -300,10 +303,10 @@ sub _parse_XML {
                     }
                 }
             }
-            
-            
+
+
             # Lastly, check for any other allowed pages.
-            
+
 
             my @valid_other = split( "\n", $config->{gamp_valid_other_urls} );
             my $other_details = {};
@@ -311,7 +314,7 @@ sub _parse_XML {
                 my ($other_url, $other_title) = split(',\s*', $valid);
                 $other_title = trim($other_title); # Remove any extra leading/trailing space
 
-                # Remove the domain name from the allowed URLs, so that it can be 
+                # Remove the domain name from the allowed URLs, so that it can be
                 # compared to $gaPagePath.
                 my $path = $other_url;
                 $path =~ s!^(https?:\/\/)(.*?)(\/.*)!$3!;
